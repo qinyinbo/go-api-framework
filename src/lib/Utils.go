@@ -1,4 +1,4 @@
-package library
+package lib
 
 import (
 	"errors"
@@ -16,7 +16,7 @@ func HttpClientPost(timeout time.Duration, connection_timeout time.Duration, gur
 
 	transport := &http.Transport{
 		Dial: func(network, addr string) (net.Conn, error) {
-			return net.DialTimeout(network, addr, timeout)
+			return net.DialTimeout(network, addr, connection_timeout)
 		},
 	}
 	client := &http.Client{
@@ -29,17 +29,23 @@ func HttpClientPost(timeout time.Duration, connection_timeout time.Duration, gur
 		if k == "fix_n" {
 			k = "n"
 		}
-		clusterinfo.Add(k, v.(string))
+		if str, ok := v.(string); ok {
+			clusterinfo.Add(k, str)
+		} else if str, ok := v.([]string); ok {
+			clusterinfo[k] = str
+		}
 	}
 	dataStr := clusterinfo.Encode()
 
 	request, err := http.NewRequest("GET", gurl, strings.NewReader(dataStr))
+
 	if err != nil {
 		return "", err
 	}
 	/*
 		cookie := &http.Cookie{Name: "userId", Value: strconv.Itoa(12345)}
 		request.AddCookie(cookie)
+
 	*/
 	for _, v := range headers {
 		v := v.(map[string]interface{})
@@ -48,6 +54,7 @@ func HttpClientPost(timeout time.Duration, connection_timeout time.Duration, gur
 		} else {
 			request.Header.Set(strings.Title(v["name"].(string)), v["value"].(string))
 		}
+
 	}
 	response, err := client.Do(request)
 	if err != nil {
@@ -84,7 +91,11 @@ func HttpClientGet(timeout time.Duration, connection_timeout time.Duration, gurl
 		if k == "fix_n" {
 			k = "n"
 		}
-		clusterinfo.Add(k, v.(string))
+		if str, ok := v.(string); ok {
+			clusterinfo.Add(k, str)
+		} else if str, ok := v.([]string); ok {
+			clusterinfo[k] = str
+		}
 	}
 	dataStr := clusterinfo.Encode()
 	gurl = gurl + "?" + dataStr
@@ -98,7 +109,6 @@ func HttpClientGet(timeout time.Duration, connection_timeout time.Duration, gurl
 		request.AddCookie(cookie)
 
 	*/
-	fmt.Println(gurl)
 	for _, v := range headers {
 		v := v.(map[string]interface{})
 		if v["name"].(string) == "host" {
@@ -136,7 +146,7 @@ func GetIdc() string {
 	if len(hosts) >= 3 {
 		idc = hosts[2]
 	}
-	idc = "default"
+	idc = "gzst"
 	return idc
 }
 func GetLocalIp() string {
@@ -158,7 +168,6 @@ func MapMerge(map1 map[string]interface{}, map2 map[string]interface{}) map[stri
 	}
 	return map1
 }
-
 func SerializePhp(data map[string]interface{}) string {
 	ret := fmt.Sprintf("a:%d:{", len(data))
 	for key, value := range data {

@@ -1,0 +1,14 @@
+########基础配置项##############
+#保存进程id的文件路径, 用于进程停止和重启
+app_pid_file = ./pid
+#日志文件根目录
+log_root = ../logs
+#日志level, 0:debug 1:access 2:warning 3:error
+log_level = 0
+#http请求监听端口
+http_port = 2016
+#http请求读超时和写超时ms
+http_timeout = 40000
+
+########业务配置项##############
+key1 = value1

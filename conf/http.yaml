@@ -1,0 +1,46 @@
+xxxxxxxxxxxxx:
+    config_name: ''
+    host_port: ''
+    path: ''
+    config_name_cn: ''
+    service_owner: ''
+    params: ''
+    params_check: TRUE
+    header: ''
+    http_method: 'get'
+    total_timeout: 1000
+    connection_timeout: 200
+    retry_times: 1
+    alarm_total_time: 1
+    is_disable: FALSE
+    log_id: true
+
+yyyyyyyyyyyyy:
+    config_name: "xxxxxxx"
+    config_name_cn: "xxxx数据中心"
+    host_port:
+        zzbc:
+            hostname: "127.0.0.1"
+            port: 80
+        default:
+            hostname: "127.0.0.1"
+            port: 80
+
+    header:
+        -   name: "host"
+            value: "xxxx.com"
+        -   name: "sc"
+            value: "http"
+    path: "/"
+    params:
+        _method: ""
+        q: ""
+        s: "0"
+        fix_n: "20"
+        _clientid: "xxxxxx"
+        lua: "1"
+    params_check: FALSE
+    total_timeout: 3000
+    connection_timeout: 500
+    alarm_total_time: 0.5
+

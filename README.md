@@ -1,1 +1,1 @@
-my go library
+go-api-framework
