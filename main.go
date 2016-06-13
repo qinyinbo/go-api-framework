@@ -36,8 +36,7 @@ func envInit() {
 func startServer() {
 	server := lib.NewHttpServer("", lib.Conf.GetInt("http_port"),
 		lib.Conf.GetInt("http_timeout"),
-		lib.Conf.GetBool("pprof_enable"))
-	server.AddController(&api.XxxController{})
+	server.AddController(&api.SearchController{})
 	fmt.Println("Server Start")
 	server.Run()
 }
